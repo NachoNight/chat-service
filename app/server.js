@@ -1,5 +1,6 @@
 const express = require('express');
-const io = require('socket.io');
+const socketIO = require('socket.io');
+const http = require('http');
 const { port, environment } = require('./config').server;
 const handler = require('./handler');
 const initRouter = require('./router');
@@ -8,6 +9,8 @@ const database = require('./db');
 class Server {
   constructor() {
     this.app = express();
+    this.server = http.Server(this.app);
+    this.io = socketIO(this.server);
     this.init();
   }
 
@@ -22,11 +25,11 @@ class Server {
   }
 
   sockets() {
-    io.on('connection', handler);
+    this.io.on('connection', handler);
   }
 
   start() {
-    this.app.listen(port, (err) => {
+    this.server.listen(port, (err) => {
       if (err) this.stop(err);
       console.log(
         `Server is running.\nhttp://localhost:${port}/\nEnvironment: ${environment}`,
