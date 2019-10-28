@@ -1,7 +1,7 @@
 const { STRING, DATE, NOW } = require('sequelize');
 const database = require('../');
 
-const Chat = database.define('Chat', {
+const ChatMessage = database.define('ChatMessage', {
   user: {
     type: STRING,
   },
@@ -12,6 +12,9 @@ const Chat = database.define('Chat', {
   body: {
     type: STRING,
   },
+  room: {
+    type: STRING,
+  },
 });
 
-module.exports = Chat;
+module.exports = ChatMessage;

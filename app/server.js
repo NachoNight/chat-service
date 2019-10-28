@@ -2,7 +2,7 @@ const express = require('express');
 const socketIO = require('socket.io');
 const http = require('http');
 const { port, environment } = require('./config').server;
-const handler = require('./handler');
+const socketsHandler = require('./handlers/socket');
 const initRouter = require('./router');
 const database = require('./db');
 
@@ -25,7 +25,8 @@ class Server {
   }
 
   sockets() {
-    this.io.on('connection', handler);
+    // Initialize sockets handler
+    this.io.on('connection', socketsHandler);
   }
 
   start() {

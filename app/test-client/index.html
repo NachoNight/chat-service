@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Test Client</title>
+    <style>
+      .message {
+        background-color: gray;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Check yer console</h1>
+    <p>Test sending a message in the room:</p>
+    <p>Room: ignacius</p>
+    <div id="output"></div>
+    <input id="input" type="text" />
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2.3.0/dist/socket.io.js"></script>
+    <script>
+      const socket = io();
+      socket.emit('join_room', { name: 'ignacius' });
+      socket.on('get_messages', (data) => {
+        data.map((v) => {
+          document.getElementById('output').innerHTML += `<div class="message">
+            <p>${v.user}</p>
+            <p>${v.body}</p>
+          </div>`;
+        });
+      });
+      document.getElementById('input').addEventListener('keydown', (e) => {
+        if (e.keyCode === 13) {
+          socket.emit('send_message', {
+            room: 'ignacius',
+            body: e.target.value,
+            user: 'testingclient',
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
