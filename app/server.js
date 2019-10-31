@@ -1,8 +1,7 @@
 const express = require('express');
-const socketIO = require('socket.io');
 const http = require('http');
 const { port, environment } = require('./config').server;
-const socketsHandler = require('./handlers/socket');
+const handler = require('./handler');
 const initRouter = require('./router');
 const database = require('./db');
 
@@ -10,23 +9,18 @@ class Server {
   constructor() {
     this.app = express();
     this.server = http.Server(this.app);
-    this.io = socketIO(this.server);
     this.init();
   }
 
   init() {
     console.log('Initializing server...');
     initRouter(this.app);
+    handler(this.server);
     database
       .authenticate()
       .then(() => console.log('Connection with the database established.'))
       .catch((err) => this.stop(err));
     database.sync({ logging: false });
-  }
-
-  sockets() {
-    // Initialize sockets handler
-    this.io.on('connection', socketsHandler);
   }
 
   start() {
@@ -36,7 +30,6 @@ class Server {
         `Server is running.\nhttp://localhost:${port}/\nEnvironment: ${environment}`,
       );
     });
-    this.sockets();
   }
 
   stop(err = false) {
