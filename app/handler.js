@@ -12,13 +12,11 @@ module.exports = (server) => {
         socket.emit('get_message', msg);
       }
     };
-    socket.on('join_room', ({ name }) => {
-      console.log(`Socket joining room ${name}`);
-      socket.join(name);
-      getMessages(name);
+    socket.on('join_room', (room) => {
+      socket.join(room);
+      getMessages(room);
     });
     socket.on('send_message', async ({ user, body, room }) => {
-      console.log('New message in room', room);
       await ChatMessage.create({ user, body, room });
       getMessages(room, true);
     });

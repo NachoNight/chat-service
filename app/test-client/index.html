@@ -21,8 +21,10 @@
     <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2.3.0/dist/socket.io.js"></script>
     <script>
       const socket = io();
+      const username = prompt('Username:');
+      const room = 'ignacius';
       const output = document.getElementById('output');
-      socket.emit('join_room', { name: 'ignacius' });
+      socket.emit('join_room', room);
       socket.on('get_message', (data) => {
         output.innerHTML = '';
         data.map((v) => {
@@ -35,9 +37,9 @@
       document.getElementById('input').addEventListener('keydown', (e) => {
         if (e.keyCode === 13) {
           socket.emit('send_message', {
-            room: 'ignacius',
+            room,
             body: e.target.value,
-            user: 'testingclient',
+            user: username,
           });
         }
       });
