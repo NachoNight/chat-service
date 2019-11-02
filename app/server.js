@@ -26,9 +26,10 @@ class Server {
   start() {
     this.server.listen(port, (err) => {
       if (err) this.stop(err);
-      console.log(
-        `Server is running.\nhttp://localhost:${port}/\nEnvironment: ${environment}`,
-      );
+      let msg = `Server is running.\nhttp://localhost:${port}/\nEnvironment: ${environment}`;
+      if (environment === 'development')
+        msg += `\nTest client: http://localhost:${port}/test`;
+      console.log(msg);
     });
   }
 
