@@ -16,15 +16,17 @@
     <h1>Check yer console</h1>
     <p>Test sending a message in the room:</p>
     <p>Room: ignacius</p>
-    <div id="output"></div>
     <input id="input" type="text" />
+    <div id="output"></div>
     <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2.3.0/dist/socket.io.js"></script>
     <script>
       const socket = io();
+      const output = document.getElementById('output');
       socket.emit('join_room', { name: 'ignacius' });
-      socket.on('get_messages', (data) => {
+      socket.on('get_message', (data) => {
+        output.innerHTML = '';
         data.map((v) => {
-          document.getElementById('output').innerHTML += `<div class="message">
+          output.innerHTML += `<div class="message">
             <p>${v.user}</p>
             <p>${v.body}</p>
           </div>`;

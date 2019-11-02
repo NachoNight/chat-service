@@ -4,7 +4,8 @@
   "description": "NachoNight Chat Service",
   "main": "app/index.js",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "dev": "nodemon ."
   },
   "author": "NachoNight",
   "license": "ISC",
