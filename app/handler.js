@@ -3,6 +3,7 @@ const ChatMessage = require('./db/models/chat.model');
 
 module.exports = (server) => {
   const io = socketIO(server);
+  io.use((socket, next) => console.log(socket.request.headers));
   io.on('connection', (socket) => {
     const getMessages = async (room, global = false) => {
       const msg = await ChatMessage.findAll({ where: { room } });
